@@ -73,11 +73,11 @@ let staggerVariant = {
   },
 };
 let staggerChildVariant = {
-  initial: { x: -20 },
+  initial: { x: -30 },
   animate: {
     x: 0,
     transition: {
-      duration: 3,
+      duration: 2,
     },
   },
 };
@@ -129,8 +129,8 @@ const PresentationSlide = () => {
         <motion.div
           key="test"
           variants={staggerVariant}
-          initial={'initial'}
-          animate={'animate'}
+          initial="initial"
+          animate="animate"
           // transition={{
           //   duration: 3,
           //   // when: 'beforeChildren',
@@ -147,29 +147,29 @@ const PresentationSlide = () => {
           <motion.div>4</motion.div> */}
           <motion.div
             variants={staggerChildVariant}
-            initial={'initial'}
-            animate={'animate'}
+            initial="initial"
+            animate="animate"
           >
             1
           </motion.div>
           <motion.div
             variants={staggerChildVariant}
-            initial={'initial'}
-            animate={'animate'}
+            initial="initial"
+            animate="animate"
           >
             2
           </motion.div>
           <motion.div
             variants={staggerChildVariant}
-            initial={'initial'}
-            animate={'animate'}
+            initial="initial"
+            animate="animate"
           >
             3
           </motion.div>
           <motion.div
             variants={staggerChildVariant}
-            initial={'initial'}
-            animate={'animate'}
+            initial="initial"
+            animate="animate"
           >
             4
           </motion.div>

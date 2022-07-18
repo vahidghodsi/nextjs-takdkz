@@ -1,3 +1,4 @@
+import PresentationSlide2 from '../Components/presentation-slide-2';
 import PresentationSlide from './presentation-slide';
 
 const styles = {
@@ -23,7 +24,8 @@ const styles = {
 const PresentationContent = ({ children }) => {
   return (
     <main style={styles.main}>
-      <PresentationSlide />
+      {/* <PresentationSlide /> */}
+      <PresentationSlide2 />
     </main>
   );
 };

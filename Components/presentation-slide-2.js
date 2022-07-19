@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
+  animate,
   AnimatePresence,
   motion,
   useMotionValue,
@@ -24,25 +25,6 @@ const styles = {
     height: '450px',
     border: '1px dashed orange',
   },
-
-  context: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-  },
-
-  gridLines: {
-    hor: {
-      position: 'absolute',
-      width: '100%',
-      borderBottom: '1px solid lightgrey',
-    },
-    ver: {
-      position: 'absolute',
-      height: '100%',
-      borderRight: '1px solid lightgrey',
-    },
-  },
 };
 
 let motionVariant = {
@@ -58,53 +40,110 @@ let motionVariant = {
   },
 };
 
-const PresentationSlide2 = () => {
-  const [step, setstep] = useState(0);
-  // const x = useMotionValue(30);
-  // const y = useMotionValue(30);
+const PresentationSlide2 = ({ devMode }) => {
+  const [step, setStep] = useState(0);
+
   // const y = useTransform(x, () => step * 2);
-  const base = useMotionValue(step);
+  const base = useMotionValue(0);
   const inputs = [1, 2, 3];
-  const outputs = [10, 30, 50];
-  const y = useTransform(base, inputs, outputs);
-  const x = useTransform(y, (val) => 600 - val * 10);
-  const height = useMotionValue(10);
-  height.set(50 + step * 50);
+  const outputs = [1, 4, 8];
+  // const y = useTransform(base, inputs, outputs, { clamp: false });
   // console.log(step);
-  const variant = {
-    initial: { x: 20, y: 0 },
-    animate: { x: 20, y: 20, height: height, transition: { duration: 1 } },
+
+  const updateStep = (stepVal) => {
+    if (stepVal < 4) {
+      setStep(stepVal + 1);
+    } else {
+      setstep(0);
+    }
   };
 
+  const x = useMotionValue(100);
+  const y = useMotionValue(40);
+  const height = useMotionValue(10);
+
+  animate(height, 10 + step * 80);
+  useEffect(() => {}, []);
+
+  const variant = {
+    id: '_id',
+    title: 'motion variant object',
+    initial: {
+      x: 0,
+      y: 30,
+      opacity: 0,
+      height: 0,
+      borderLeft: '2px solid grey',
+    },
+    animate: (step) => ({
+      x: 40,
+      y: 40,
+      opacity: 1,
+      height: 10 + step * 80,
+      transition: { duration: 0.5, type: 'easeInOut' },
+    }),
+    exit: {
+      y: 0,
+      opacity: 0,
+      height: 10,
+      transition: {
+        duration: 0.4,
+        type: 'easeInOut',
+      },
+    },
+  };
+
+  const cloneObject = (value) => {
+    if (typeof value === 'object') {
+      let clonnedObj = {};
+      let keys = Object.keys(value);
+      Object.values(value).forEach((item, index) => {
+        clonnedObj[keys[index]] =
+          typeof item === 'object' ? cloneObject(item) : item;
+      });
+      return clonnedObj;
+    }
+    return value;
+  };
+
+  // ** clone object funstion test
+  let clonnedObject = cloneObject(variant);
+  console.log('=====');
+  console.log(variant);
+  console.log(clonnedObject);
+  console.log(cloneObject(['value 1', 'value 2', { title: 'value object 1' }]));
+  console.log('>>>>>');
+  clonnedObject.initial.x = 12563;
+  clonnedObject.exit.height = 12;
+  clonnedObject.exit.transition.duration = 135;
+  console.log(variant);
+  console.log(clonnedObject);
+
   return (
-    <main style={styles.main} onClick={() => setstep(step + 1)}>
+    <main style={styles.main} onClick={() => updateStep(step)}>
       {/* <AnimatePresence> */}
+      {/* */}
+
       <PresentationElement
-        position={'title'}
-        stage={''}
-        delay={''}
-        animation={'fadeIn'}
+        position={{ x: 100, y: 50 }}
+        devMode={devMode}
+        animation={variant}
+        // initial="initial"
+        // animate="animate"
       >
-        <div>Title</div>
+        title
       </PresentationElement>
-      <PresentationElement
-        position={'test'}
-        stage={''}
-        delay={''}
-        animation={{ animate: { opacity: 0.5 } }}
-      >
-        <div>test</div>
-      </PresentationElement>
-      <motion.div style={{ x, y }}>useMotionValue and useTransform</motion.div>
-      <motion.div
-        // initial={{ x: 0, y: 0, height }}
-        // animate={{ x: 20, y: 20, height, transition: { duration: 1 } }}
+      {/* <PresentationElement
+        devMode={devMode}
         variants={variant}
-        initial="initial"
-        animate="animate"
-        style={{ marginLeft: '20px', borderLeft: '1px solid grey', height }}
-        // style={{ marginLeft: '20px', borderLeft: '1px solid grey', height }}
-      ></motion.div>
+        animation={variant}
+        // initial="initial"
+        // animate="animate"
+        custom={step}
+      />
+      <motion.div
+        style={{ x, y, height, borderLeft: '2px solid grey' }}
+      ></motion.div> */}
       {/* </AnimatePresence> */}
     </main>
   );

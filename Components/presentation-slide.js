@@ -83,6 +83,8 @@ let staggerChildVariant = {
 };
 
 const PresentationSlide = () => {
+  const devMode = useState(false);
+
   return (
     <main style={styles.main}>
       <aside style={styles.context}>

@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import PresentationContent from '../../Components/presentation-content';
-// import styles from '.../styles/Home.module.css';
 
 const styles = {
   container: {
